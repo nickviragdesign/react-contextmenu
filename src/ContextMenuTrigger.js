@@ -4,7 +4,7 @@ import cx from 'classnames';
 import assign from 'object-assign';
 
 import { showMenu, hideMenu } from './actions';
-import { callIfExists, cssClasses } from './helpers';
+import { callIfExists, cssClasses, uniqueId } from './helpers';
 
 export default class ContextMenuTrigger extends Component {
     static propTypes = {
@@ -34,6 +34,13 @@ export default class ContextMenuTrigger extends Component {
         disableIfShiftIsPressed: false
     };
 
+    constructor(props) {
+        super(props);
+        this.state = assign({}, this.state, {
+            isVisible: false
+        });
+    }
+
     touchHandled = false;
 
     handleMouseDown = (event) => {
@@ -53,7 +60,15 @@ export default class ContextMenuTrigger extends Component {
         if (event.button === 0) {
             clearTimeout(this.mouseDownTimeoutId);
         }
-        callIfExists(this.props.attributes.onMouseUp, event);
+        console.log('mouse up')
+        console.log(this.state.isVisible)
+        if (!this.state.isVisible) {
+            this.handleContextClick(event)
+            this.setState({isVisible: true})
+        } else {
+            callIfExists(this.props.attributes.onMouseUp, event);
+            this.setState({isVisible: false})
+        }
     }
 
     handleMouseOut = (event) => {
