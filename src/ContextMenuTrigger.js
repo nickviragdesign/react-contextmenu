@@ -37,7 +37,7 @@ export default class ContextMenuTrigger extends Component {
     constructor(props) {
         super(props);
         this.state = assign({}, this.state, {
-            isVisible: false
+            isContextClick: false
         });
     }
 
@@ -57,18 +57,15 @@ export default class ContextMenuTrigger extends Component {
     }
 
     handleMouseUp = (event) => {
+        if (this.state.isContextClick) {
+            this.setState({isContextClick: false})
+            return
+        }
         if (event.button === 0) {
             clearTimeout(this.mouseDownTimeoutId);
         }
-        console.log('mouse up')
-        console.log(this.state.isVisible)
-        if (!this.state.isVisible) {
-            this.handleContextClick(event)
-            this.setState({isVisible: true})
-        } else {
-            callIfExists(this.props.attributes.onMouseUp, event);
-            this.setState({isVisible: false})
-        }
+        this.handleContextClick(event)
+        callIfExists(this.props.attributes.onMouseUp, event);
     }
 
     handleMouseOut = (event) => {
@@ -105,11 +102,13 @@ export default class ContextMenuTrigger extends Component {
     }
 
     handleContextMenu = (event) => {
-        this.handleContextClick(event);
+        this.handleContextClick(event, true);
         callIfExists(this.props.attributes.onContextMenu, event);
     }
 
-    handleContextClick = (event) => {
+    handleContextClick = (event, isContextClick) => {
+        this.setState({isContextClick: isContextClick})
+        
         if (this.props.disable) return;
         if (this.props.disableIfShiftIsPressed && event.shiftKey) return;
 
