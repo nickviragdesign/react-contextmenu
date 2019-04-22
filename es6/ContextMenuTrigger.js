@@ -37,14 +37,14 @@ var ContextMenuTrigger = function (_Component) {
         };
 
         _this.handleMouseUp = function (event) {
-            if (_this.state.isContextClick) {
+            if (_this.state.isContextClick && _this.props.leftClick) {
                 _this.setState({ isContextClick: false });
                 return;
             }
             if (event.button === 0) {
                 clearTimeout(_this.mouseDownTimeoutId);
             }
-            _this.handleContextClick(event);
+            if (_this.props.leftClick) _this.handleContextClick(event);
             callIfExists(_this.props.attributes.onMouseUp, event);
         };
 
@@ -172,7 +172,8 @@ ContextMenuTrigger.propTypes = {
     posX: PropTypes.number,
     posY: PropTypes.number,
     renderTag: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-    disableIfShiftIsPressed: PropTypes.bool
+    disableIfShiftIsPressed: PropTypes.bool,
+    leftClick: PropTypes.bool
 };
 ContextMenuTrigger.defaultProps = {
     attributes: {},
@@ -185,6 +186,7 @@ ContextMenuTrigger.defaultProps = {
     renderTag: 'div',
     posX: 0,
     posY: 0,
-    disableIfShiftIsPressed: false
+    disableIfShiftIsPressed: false,
+    leftClick: false
 };
 export default ContextMenuTrigger;

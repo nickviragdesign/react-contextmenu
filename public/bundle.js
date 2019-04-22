@@ -445,15 +445,14 @@ var ContextMenuTrigger = function (_Component) {
         };
 
         _this.handleMouseUp = function (event) {
-            console.log('handleMouseUp --> isContextClick = ' + _this.state.isContextClick);
-            if (_this.state.isContextClick) {
+            if (_this.state.isContextClick && _this.props.leftClick) {
                 _this.setState({ isContextClick: false });
                 return;
             }
             if (event.button === 0) {
                 clearTimeout(_this.mouseDownTimeoutId);
             }
-            _this.handleContextClick(event);
+            if (_this.props.leftClick) _this.handleContextClick(event);
             Object(__WEBPACK_IMPORTED_MODULE_5__helpers__["a" /* callIfExists */])(_this.props.attributes.onMouseUp, event);
         };
 
@@ -494,7 +493,7 @@ var ContextMenuTrigger = function (_Component) {
 
         _this.handleContextClick = function (event, isContextClick) {
             _this.setState({ isContextClick: isContextClick });
-            console.log('handleContextClick --> isContextClick = ' + isContextClick);
+
             if (_this.props.disable) return;
             if (_this.props.disableIfShiftIsPressed && event.shiftKey) return;
 
@@ -581,7 +580,8 @@ ContextMenuTrigger.propTypes = {
     posX: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number,
     posY: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.number,
     renderTag: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.oneOfType([__WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node, __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func]),
-    disableIfShiftIsPressed: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool
+    disableIfShiftIsPressed: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
+    leftClick: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool
 };
 ContextMenuTrigger.defaultProps = {
     attributes: {},
@@ -594,7 +594,8 @@ ContextMenuTrigger.defaultProps = {
     renderTag: 'div',
     posX: 0,
     posY: 0,
-    disableIfShiftIsPressed: false
+    disableIfShiftIsPressed: false,
+    leftClick: false
 };
 /* harmony default export */ __webpack_exports__["a"] = (ContextMenuTrigger);
 
@@ -30918,7 +30919,7 @@ var SimpleMenu = function (_Component) {
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_1_src_ContextMenuTrigger__["a" /* default */],
-                    { id: MENU_TYPE, holdToDisplay: 1000 },
+                    { id: MENU_TYPE, holdToDisplay: 1000, leftClick: false },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'well' },
