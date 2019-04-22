@@ -4,7 +4,7 @@ import cx from 'classnames';
 import assign from 'object-assign';
 
 import { showMenu, hideMenu } from './actions';
-import { callIfExists, cssClasses, uniqueId } from './helpers';
+import { callIfExists, cssClasses } from './helpers';
 
 export default class ContextMenuTrigger extends Component {
     static propTypes = {
@@ -58,13 +58,13 @@ export default class ContextMenuTrigger extends Component {
 
     handleMouseUp = (event) => {
         if (this.state.isContextClick) {
-            this.setState({isContextClick: false})
-            return
+            this.setState({ isContextClick: false });
+            return;
         }
         if (event.button === 0) {
             clearTimeout(this.mouseDownTimeoutId);
         }
-        this.handleContextClick(event)
+        this.handleContextClick(event);
         callIfExists(this.props.attributes.onMouseUp, event);
     }
 
@@ -107,8 +107,8 @@ export default class ContextMenuTrigger extends Component {
     }
 
     handleContextClick = (event, isContextClick) => {
-        this.setState({isContextClick: isContextClick})
-        
+        this.setState({ isContextClick });
+
         if (this.props.disable) return;
         if (this.props.disableIfShiftIsPressed && event.shiftKey) return;
 
